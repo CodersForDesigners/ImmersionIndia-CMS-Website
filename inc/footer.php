@@ -27,10 +27,10 @@ if ( ! isset( $navigationMenuItems ) )
 										<?php endforeach; ?>
 									</div>
 									<div class="columns small-12 medium-6 xlarge-5">
-										<div class="p space-min-bottom"><a target="_blank" href="tel:+919591658632" tabindex="-1" class="link line-height-small" style="line-height: .85"><img class="icon" src="./media/icon/icon-phone.svg<?= $ver ?>"><span class="inline-top"><span class="l">+91 95916 58632</span><br><span class="small opacity-50">Also on WhatsApp & FaceTime.</span></span></a></div>
-										<div class="p space-min-bottom"><a target="_blank" href="https://in.linkedin.com/company/immersion-india" tabindex="-1" class="link line-height-small"><img class="icon" src="./media/icon/icon-linkedin.svg<?= $ver ?>"><span class="l">Connect on LinkedIn</span></a></div>
-										<div class="p space-min-bottom"><a target="_blank" href="mailto:experiences@immersionindia.com" tabindex="-1" class="link line-height-small"><img class="icon" src="./media/icon/icon-email.svg<?= $ver ?>"><span class="l">experiences@immersionindia.com</span></a></div>
-										<div class="p space-min-bottom"><a target="_blank" href="https://g.page/immersion-india?share" tabindex="-1" class="link line-height-small"><img class="icon" src="./media/icon/icon-gmaps.svg<?= $ver ?>"><span class="l">Immersion India</span></a></div>
+										<div class="p space-min-bottom"><a target="_blank" href="tel:+919591658632" tabindex="-1" class="link line-height-small" style="line-height: .85"><img class="icon" src="/media/icon/icon-phone.svg<?= $ver ?>"><span class="inline-top"><span class="l">+91 95916 58632</span><br><span class="small opacity-50">Also on WhatsApp & FaceTime.</span></span></a></div>
+										<div class="p space-min-bottom"><a target="_blank" href="https://in.linkedin.com/company/immersion-india" tabindex="-1" class="link line-height-small"><img class="icon" src="/media/icon/icon-linkedin.svg<?= $ver ?>"><span class="l">Connect on LinkedIn</span></a></div>
+										<div class="p space-min-bottom"><a target="_blank" href="mailto:experiences@immersionindia.com" tabindex="-1" class="link line-height-small"><img class="icon" src="/media/icon/icon-email.svg<?= $ver ?>"><span class="l">experiences@immersionindia.com</span></a></div>
+										<div class="p space-min-bottom"><a target="_blank" href="https://g.page/immersion-india?share" tabindex="-1" class="link line-height-small"><img class="icon" src="/media/icon/icon-gmaps.svg<?= $ver ?>"><span class="l">Immersion India</span></a></div>
 										<div class="p space-25-top-bottom"><a href="/" tabindex="-1" class="link line-height-small"><img src="../media/logo-immersion-light.svg<?= $ver ?>"></a></div>
 										<div class="p space-min-bottom"><span class="opacity-50">303, Milwaukee, 40 Promenade Road, Frazer Town. Bangalore—560005. Karnataka. India.</span></div>
 									</div>
