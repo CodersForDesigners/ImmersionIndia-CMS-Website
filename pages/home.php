@@ -1,123 +1,117 @@
 <?php
 /*
- *
- * This is a sample page you can copy and use as boilerplate for any new page.
- *
+ |
+ | Home page
+ |
  */
 
-require_once __DIR__ . '/../inc/above.php';
+require_once __ROOT__ . '/inc/utils.php';
+require_once __ROOT__ . '/inc/cms.php';
 
-
-/*
- * ----- Fallback Images
- */
-$heroVideoFallbackImage = getContent( '', 'home_landing_video_fallback_image -> sizes -> large' );
-$thumbnailFallbackImage = getContent( '', 'list_item_thumbnail_fallback_image -> sizes -> small' );
+use BFS\CMS;
+CMS::setupContext();
 
 
 
 /*
- * ----- Fact Slides
+ |
+ | Fallback Images
+ |
  */
-$slideGallery = [ ];
-$slidePosts = getPostsOf( 'slides' );
+$heroVideoFallbackImage = CMS::get( 'home_landing_video_fallback_image / sizes / large' ) ?? '';
+$thumbnailFallbackImage = CMS::get( 'list_item_thumbnail_fallback_image / sizes / small' ) ?? '';
+
+
+
+/*
+ |
+ | Fact Slides
+ |
+ */
+$slidePosts = CMS::getPostsOf( 'slides' );
 foreach ( $slidePosts as $slide ) {
-	$caption = getContent( '', 'caption', $slide[ 'ID' ] );
-	$imageData = getContent( '', 'image', $slide[ 'ID' ] );
-	if (
-		empty( $caption )
-		or empty( $imageData )
-		or empty( $imageData[ 'sizes' ] )
-	)
+	$image = $slide->get( 'image' );
+	if ( empty( $image ) )
 		continue;
 
-	$imageVersions = array_values( $imageData[ 'sizes' ] );
+	$imageVersions = array_values( $image[ 'sizes' ] );
 	$urls = [ ];
 	for ( $_i = 0; $_i < count( $imageVersions ) / 3; $_i += 1 )
 		$urls[ ] = $imageVersions[ $_i * 3 ] . ' ' . $imageVersions[ $_i * 3 + 1 ] . 'w';
 
-	$slideGallery[ ] = [
-		'caption' => $caption,
-		'image' => [
-			'fallbackURL' => $imageData[ 'url' ],
-			'srcsetURL' => implode( ', ', $urls )
-		]
-	];
+	$slide->set( 'fallbackImageURL', $image[ 'url' ] );
+	$slide->set( 'imageSrcsetURL', implode( ', ', $urls ) );
 }
 
 
 /*
- * ----- Programs
+ |
+ | Programs
+ |
  */
-$programs = [ ];
-$programPosts = getPostsOf( 'programs' );
-foreach ( $programPosts as $program ) {
-	$type = getContent( '', 'type', $program[ 'ID' ] );
-	$bgColor = strtolower( $type ) === 'travel' ? 'pink' : 'teal';
-
-	$programs[ ] = [
-		'id' => $program[ 'ID' ],
-		'subject' => getContent( '', 'subject', $program[ 'ID' ] ),
-		'title' => $program[ 'post_title' ],
-		'type' => $type,
-		'bgColor' => $bgColor,
-		'image' => getContent( null, 'image -> sizes -> small', $program[ 'ID' ] ),
-		'description' => getContent( '', 'description', $program[ 'ID' ] ),
-		'attachment' => getContent( '', 'details_pdf -> url', $program[ 'ID' ] )
-	];
+$programs = CMS::getPostsOf( 'programs' );
+foreach ( $programs as $program ) {
+	$program->set( 'title', $program->get( 'post_title' ) );
+	$type = $program->get( 'type' );
+	$program->set( 'bgColor', strtolower( $type ) === 'travel' ? 'pink' : 'teal' );
+	$image = $program->get( 'image' );
+	$program->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? '/media/fallback-image.png' );
+	$program->set( 'attachment', $program->get( 'details_pdf' )[ 'url' ] ?? '#' );
 }
 
 
 /*
- * ----- Posts
+ |
+ | Posts
+ |
  */
-$posts = [ ];
 $postCategories = [ ];
-$postObjects = getPostsOf( 'post' );
-foreach ( $postObjects as $postObject ) {
-	$featuredImage = get_the_post_thumbnail_url( $postObject[ 'ID' ] );
-	$categories = get_the_category( $postObject[ 'ID' ] );
+$posts = CMS::getPostsOf( 'post' );
+foreach ( $posts as $post ) {
+
+	$post->set( 'title', $post->get( 'post_title' ) );
+	$post->set( 'slug', $post->get( 'post_name' ) );
+	$post->set( 'excerpt', $post->get( 'post_excerpt' ) ?: substr( wp_strip_all_tags( $post->get( 'post_content' ) ), 0, 415 ) );
+	$post->set( 'featuredImage', get_the_post_thumbnail_url( $post->get( 'ID' ) ) );
+
+	$categories = get_the_category( $post->get( 'ID' ) );
 	if ( empty( $categories ) )
 		$category = '';
 	else
 		$category = $categories[ 0 ]->name;
+
+	$post->set( 'category', $category );
 	$postCategories[ $category ] = true;
 
-	$excerpt = $postObject[ 'post_excerpt' ] ?: substr( wp_strip_all_tags( $postObject[ 'post_content' ] ), 0, 415 );
-
-	$posts[ ] = [
-		'title' => $postObject[ 'post_title' ],
-		'slug' => $postObject[ 'post_name' ],
-		'category' => $category,
-		'featuredImage' => $featuredImage,
-		'excerpt' => $excerpt
-	];
 }
 $postCategories = array_keys( $postCategories );
 
 
 /*
- * ----- Brochures
+ |
+ | Brochures
+ |
  */
 $brochures = [
-	'sample_virtual' => getContent( '#', 'sample_brochure_virtual' ),
-	'sample_travel' => getContent( '#', 'sample_brochure_travel' )
+	'sample_virtual' => CMS::get( 'sample_brochure_virtual' ) ?? '#',
+	'sample_travel' => CMS::get( 'sample_brochure_travel' ) ?? '#',
 ];
 
 
 /*
- * ----- Members
+ |
+ | Members
+ |
  */
-$members = [ ];
-$memberObjects = getPostsOf( 'members' );
-foreach ( $memberObjects as $memberObject ) {	
-	$members[ ] = [
-		'name' => $memberObject[ 'post_title' ],
-		'designation' => getContent( '', 'designation', $memberObject[ 'ID' ] ),
-		'image' => getContent( $thumbnailFallbackImage, 'image -> sizes -> small', $memberObject[ 'ID' ] ),
-		'filter_black_white' => getContent( '', 'filter_black_white', $memberObject[ 'ID' ] )
-	];
+$members = CMS::getPostsOf( 'members' );
+foreach ( $members as $member ) {
+	$member->set( 'name', $member->get( 'post_title' ) );
+	$member->set( 'image', $member->get( 'image' )[ 'sizes' ][ 'small' ] ?? $thumbnailFallbackImage );
 }
+
+
+// Pull in the header section
+require_once __ROOT__ . '/inc/header.php';
 
 ?>
 
@@ -248,16 +242,16 @@ foreach ( $memberObjects as $memberObject ) {
 <!-- Gallery Section -->
 <section class="gallery-section" id="gallery-section" data-section-title="Gallery Section" data-section-slug="gallery-section">
 	<div class="slide-gallery block">
-		<?php foreach ( $slideGallery as $slide ) : ?>
+		<?php foreach ( $slidePosts as $slide ) : ?>
 			<div class="slide">
 				<div class="image">
-					<img src="<?= $slide[ 'image' ][ 'fallbackURL' ] ?>" srcset="<?= $slide[ 'image' ][ 'srcsetURL' ] ?>" sizes="100vw" loading="lazy">
+					<img src="<?= $slide->get( 'fallbackImageURL' ) ?>" srcset="<?= $slide->get( 'imageSrcsetURL' ) ?>" sizes="100vw" loading="lazy">
 				</div>
 				<div class="content">
 					<div class="container">
 						<div class="row">
 							<div class="columns small-12 medium-10 medium-offset-1 large-8 large-offset-2">
-								<div class="p w-500 line-height-large text-center"><?= $slide[ 'caption' ] ?></div>
+								<div class="p w-500 line-height-large text-center"><?= $slide->get( 'caption' ) ?></div>
 							</div>
 						</div>
 					</div>
@@ -298,7 +292,7 @@ foreach ( $memberObjects as $memberObject ) {
 
 						<div class="program-filter space-25-top-bottom">
 							<div class="feedback p text-neutral-4 opacity-50 space-min-bottom">
-								<img class="inline-middle" width="16" src="../media/icon/icon-filter-dark.svg<?= $ver ?>">
+								<img class="inline-middle" width="16" src="/media/icon/icon-filter-dark.svg<?= $ver ?>">
 								<span class="inline-middle js_program_filter_status_message">Select to Filter by Virtual or Travel Programs</span>
 							</div>
 							<div class="row toggle">
@@ -320,17 +314,17 @@ foreach ( $memberObjects as $memberObject ) {
 	<div class="programs row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%); --fade-right: linear-gradient( to right, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
 			<?php foreach ( $programs as $program ) : ?>
-				<div class="program carousel-list-item js_carousel_item js_program" data-program-type="<?= strtolower( $program[ 'type' ] ) ?>">
-					<div class="header fill-<?= $program[ 'bgColor' ] ?> space-min">
-						<div class="type label text-uppercase"><img width="16" src="../media/icon/icon-<?= strtolower( $program[ 'type' ] ) ?>-light.svg<?= $ver ?>"><span><?= $program[ 'type' ] ?></span></div>
-						<div class="subject h6 text-uppercase"><?= $program[ 'subject' ] ?></div>
+				<div class="program carousel-list-item js_carousel_item js_program" data-program-type="<?= strtolower( $program->get( 'type' ) ) ?>">
+					<div class="header fill-<?= $program->get( 'bgColor' ) ?> space-min">
+						<div class="type label text-uppercase"><img width="16" src="/media/icon/icon-<?= strtolower( $program->get( 'type' ) ) ?>-light.svg<?= $ver ?>"><span><?= $program->get( 'type' ) ?></span></div>
+						<div class="subject h6 text-uppercase"><?= $program->get( 'subject' ) ?></div>
 					</div>
-					<div class="thumbnail fill-neutral-3" style="background-image: url('<?= $program[ 'image' ] ?: $thumbnailFallbackImage ?>');"></div>
+					<div class="thumbnail fill-neutral-3" style="background-image: url('<?= $program->get( 'image' ) ?: $thumbnailFallbackImage ?>');"></div>
 					<div class="description space-min-top-bottom">
-						<div class="title h5 strong space-min-bottom"><?= $program[ 'title' ] ?></div>
-						<div class="excerpt p"><?= $program[ 'description' ] ?></div>
+						<div class="title h5 strong space-min-bottom"><?= $program->get( 'title' ) ?></div>
+						<div class="excerpt p"><?= $program->get( 'description' ) ?></div>
 					</div>
-					<a class="button block fill-<?= $program[ 'bgColor' ] ?> js_select_program" data-program-id="<?= $program[ 'id' ] ?>">Customize <span class="hide-for-small">This </span>Program</a>
+					<a class="button block fill-<?= $program->get( 'bgColor' ) ?> js_select_program" data-program-id="<?= $program->get( 'ID' ) ?>">Customize <span class="hide-for-small">This </span>Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -372,15 +366,15 @@ foreach ( $memberObjects as $memberObject ) {
 	<div class="articles row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(227, 226, 216, 0) 0%, rgba(227, 226, 216, 1) 50%); --fade-right: linear-gradient( to right, rgba(227, 226, 216, 0) 0%, rgba(227, 226, 216, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
 			<?php foreach ( $posts as $post ) : ?>
-				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post[ 'category' ] ) ?>">
-					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post[ 'featuredImage' ] ?: $thumbnailFallbackImage ?>' );">
-						<div class="tag small text-uppercase"><?= $post[ 'category' ] ?></div>
+				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post->get( 'category' ) ) ?>">
+					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post->get( 'featuredImage' ) ?: $thumbnailFallbackImage ?>' );">
+						<div class="tag small text-uppercase"><?= $post->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $post[ 'slug' ] ?>" class="title h5 text-teal strong space-min-bottom"><?= $post[ 'title' ] ?></a>
-						<div class="excerpt p"><?= $post[ 'excerpt' ] ?></div>
+						<a href="<?= $post->get( 'slug' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $post->get( 'title' ) ?></a>
+						<div class="excerpt p"><?= $post->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $post[ 'slug' ] ?>" class="button block fill-teal">Read The Full Article</a>
+					<a href="<?= $post->get( 'slug' ) ?>" class="button block fill-teal">Read The Full Article</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -476,7 +470,7 @@ foreach ( $memberObjects as $memberObject ) {
 									<select class="block" id="js_form_input_program">
 										<option value="" disabled selected>-- Select Program --</option>
 										<?php foreach ( $programs as $program ) : ?>
-											<option id="<?= $program[ 'id' ] ?>" value="<?= $program[ 'type' ] ?>: <?= $program[ 'subject' ] ?>"><?= $program[ 'type' ] ?>: <?= $program[ 'subject' ] ?> [ <?= $program[ 'title' ] ?> ]</option>
+											<option id="<?= $program->get( 'ID' ) ?>" value="<?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?>"><?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?> [ <?= $program->get( 'title' ) ?> ]</option>
 										<?php endforeach; ?>
 									</select>
 								</label>
@@ -540,10 +534,10 @@ foreach ( $memberObjects as $memberObject ) {
 		<div class="carousel-list js_carousel_content">
 			<?php foreach ( $members as $member ) : ?>
 				<div class="member carousel-list-item js_carousel_item js_program">
-					<div class="thumbnail fill-neutral-3" style="background-image: url('<?= $member[ 'image' ] ?>'); <?php if ( $member['filter_black_white'] ) : ?> filter: grayscale(1);<?php endif; ?>"></div>
+					<div class="thumbnail fill-neutral-3" style="background-image: url('<?= $member->get( 'image' ) ?>'); <?php if ( $member->get( 'filter_black_white' ) ) : ?> filter: grayscale( 1 );<?php endif; ?>"></div>
 					<div class="info space-min-top-bottom">
-						<div class="name h4 w-400"><?= $member[ 'name' ] ?></div>
-						<div class="designation p text-orange text-uppercase"><?= $member[ 'designation' ] ?></div>
+						<div class="name h4 w-400"><?= $member->get( 'name' ) ?></div>
+						<div class="designation p text-orange text-uppercase"><?= $member->get( 'designation' ) ?></div>
 					</div>
 				</div>
 			<?php endforeach; ?>
@@ -561,4 +555,4 @@ foreach ( $memberObjects as $memberObject ) {
 
 
 
-<?php require_once __DIR__ . '/../inc/below.php'; ?>
+<?php require_once __ROOT__ . '/inc/footer.php'; ?>

@@ -10,12 +10,21 @@ define( 'THEME_SETTINGS_PATH', get_template_directory() . '/settings' );
 
 
 
+require get_template_directory() . '/inc/utils.php';
+require get_template_directory() . '/inc/hooks.php';
 
+
+
+require_once THEME_SETTINGS_PATH . '/routing.php';
+require_once THEME_SETTINGS_PATH . '/authentication.php';
+require_once THEME_SETTINGS_PATH . '/unhide-the-reusable-blocks-post-type.php';
 
 add_action( 'after_setup_theme', function () {
 
 	// Theme supports
 	require_once THEME_SETTINGS_PATH . '/theme-supports.php';
+	// Document Title
+	require_once THEME_SETTINGS_PATH . '/document-title.php';
 	// Media settings
 	require_once THEME_SETTINGS_PATH . '/media.php';
 	// Gutenberg Block editor settings

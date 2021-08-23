@@ -1,21 +1,32 @@
 <?php
 
-// Page-specific preparatory code goes here.
-require_once __DIR__ . '/../inc/above.php';
+require_once __ROOT__ . '/inc/utils.php';
+require_once __ROOT__ . '/inc/cms.php';
 
-$featuredImageHeight = getContent( '', 'featured_image_height' );
+use BFS\Router;
+use BFS\CMS;
+CMS::setupContext();
+
+global $thePost;
+$thePost = CMS::getThisPost();
+
+$featuredImageHeight = CMS::get( 'featured_image_height' );
 $featuredImageStyle = '';
 
-if( !empty($featuredImageHeight) )
+if ( ! empty( $featuredImageHeight ) )
 	$featuredImageStyle = 'padding-top: calc( '. $featuredImageHeight . '% - 60px ) !important;';
 
 
-$featuredImageFallback = getContent( '', 'post_featured_fallback_image -> sizes -> medium' );
-$featuredImage = get_the_post_thumbnail_url( $thePost[ 'ID' ] ) ?: $featuredImageFallback;
+$featuredImageFallback = CMS::get( 'post_featured_fallback_image / sizes / medium' );
+$featuredImage = get_the_post_thumbnail_url( $thePost->get( 'ID' ) ) ?: $featuredImageFallback;
 
-$socialImage = getContent( '', 'social_image -> sizes -> medium' );
+$socialImage = CMS::get( 'social_image / sizes / medium' );
 
-$postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $thePost[ 'post_content' ] ) );
+$postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $thePost->get( 'post_content' ) ) );
+
+
+
+require_once __ROOT__ . '/inc/header.php';
 
 ?>
 
@@ -30,7 +41,7 @@ $postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $theP
 		<div class="container">
 			<div class="row">
 				<div class="columns small-12 medium-10 medium-offset-1 space-100-bottom">
-					<div class="title h3 space-min-bottom"><?= $thePost[ 'post_title' ] ?></div>
+					<div class="title h3 space-min-bottom"><?= $thePost->get( 'post_title' ) ?></div>
 					<div class="row">
 						<div class="underline columns small-4 medium-3 large-2"><span class="fill-orange"></span></div>
 					</div>
@@ -51,8 +62,8 @@ $postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $theP
 					<div class="block share-url js_share_url_widget">
 						<span class="share-url-title label text-uppercase inline-middle text-orange js_share_url_title">Share</span>
 						<i class="icon material-icons inline-middle text-orange">link</i>
-						<a class="share-url-label p inline-middle js_share_url" href="<?= $pageUrl ?>" target="_blank"><?= $pageUrl ?></a>
-						<textarea class="visuallyhidden js_share_url_text"><?= $pageUrl ?></textarea>
+						<a class="share-url-label p inline-middle js_share_url" href="<?= $pageURL ?>" target="_blank"><?= $pageURL ?></a>
+						<textarea class="visuallyhidden js_share_url_text"><?= $pageURL ?></textarea>
 					</div>
 					<!-- END: Share -->
 					<?= $postContent ?: 'Um, what happened to the content?' ?>
@@ -99,4 +110,4 @@ $postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $theP
 
 </script>
 
-<?php require_once __DIR__ . '/../inc/below.php'; ?>
+<?php require_once __ROOT__ . '/inc/footer.php'; ?>

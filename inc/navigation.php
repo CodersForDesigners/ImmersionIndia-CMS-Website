@@ -1,4 +1,12 @@
 <?php
+
+/*
+ *
+ * Build out the data-structure driving the page navigation markup
+ *
+ */
+$navigationMenuItems = \BFS\CMS::getNavigation( 'Main' );
+
 ?>
 <!-- Header Section -->
 <section class="header-section space-25-top-bottom">
@@ -6,7 +14,7 @@
 		<div class="row">
 			<div class="columns small-12 medium-10 medium-offset-1">
 				<a href="/" class="logo">
-					<img src="../media/logo-immersion-light-banner.svg<?= $ver ?>">
+					<img src="/media/logo-immersion-light-banner.svg<?= $ver ?>">
 				</a>
 			</div>
 		</div>
@@ -34,7 +42,7 @@
 				<div class="close-button button fill-orange js_nav_close"><i class="material-icons">close</i></div>
 				<div class="title h2 strong opacity-50 text-uppercase space-25-bottom">Menu</div>
 				<?php foreach ( $navigationMenuItems as $item ) : ?>
-					<div class="h4"><a class="link space-min-top-bottom <?= $item[ 'classes' ] ?>" href="<?= $item[ 'url' ] ?>"><span class="l"><?= $item[ 'label' ] ?></span></a></div>
+					<div class="h4"><a class="link space-min-top-bottom <?= $item[ 'classes' ] ?>" href="<?= $item[ 'url' ] ?>"><span class="l"><?= $item[ 'title' ] ?></span></a></div>
 				<?php endforeach; ?>
 			</div>
 		</div>
