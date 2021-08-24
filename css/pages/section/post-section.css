@@ -169,6 +169,10 @@
 .post-section .wp-block-gallery .blocks-gallery-grid.slick-slider {
 	margin-bottom: 0;
 }
+	/* There is a bug on Chrome where each carousel item has additional vacant vertical space */
+.post-section .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-slide {
+	height: auto;
+}
 .post-section .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-dots {
 	bottom: 5px;
 	z-index: 4
