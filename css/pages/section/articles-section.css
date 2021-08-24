@@ -151,7 +151,48 @@
 	background-image: linear-gradient( to bottom, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 98%);
 }
 
+.travel.articles-section .article-filter .toggle .tag input + span {
+	border-bottom: solid 2px var(--pink);
+}
+
+.travel.articles-section .article-filter .toggle .tag input + span .check {
+	box-shadow: inset 0px 0px 0px 2px var(--pink);
+}
+
+.travel.articles-section .article-filter .toggle .tag input:checked + span {
+	background-color: var(--pink);
+}
+
+.travel.articles-section .article-filter .toggle .tag input:checked + span .check:before {
+	color: var(--pink);
+}
+
+.travel.articles-section .articles .article .thumbnail .tag {
+	color: var(--pink);
+}
+
+
 /* Virtual */
 .virtual.articles-section .articles .article .description:after {
 	background-image: linear-gradient( to bottom, rgba(35, 31, 32, 0) 0%, rgba(35, 31, 32, 1) 98%);
+}
+
+.virtual.articles-section .article-filter .toggle .tag input + span {
+	border-bottom: solid 2px var(--orange);
+}
+
+.virtual.articles-section .article-filter .toggle .tag input + span .check {
+	box-shadow: inset 0px 0px 0px 2px var(--orange);
+}
+
+.virtual.articles-section .article-filter .toggle .tag input:checked + span {
+	background-color: var(--orange);
+}
+
+.virtual.articles-section .article-filter .toggle .tag input:checked + span .check:before {
+	color: var(--orange);
+}
+
+.virtual.articles-section .articles .article .thumbnail .tag {
+	color: var(--orange);
 }

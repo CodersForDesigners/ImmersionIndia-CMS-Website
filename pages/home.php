@@ -420,7 +420,7 @@ require_once __ROOT__ . '/inc/header.php';
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
-				<div class="h2 text-uppercase space-min-bottom">Travel Programs</div>
+				<div class="h2 text-uppercase space-min-bottom">Travel Study Programs</div>
 				<div class="row">
 					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-pink"></span></div>
 				</div>
@@ -469,7 +469,7 @@ require_once __ROOT__ . '/inc/header.php';
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
-				<div class="h2 text-uppercase space-min-bottom">Virtual Programs</div>
+				<div class="h2 text-uppercase space-min-bottom">Virtual Study Programs</div>
 				<div class="row">
 					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-orange"></span></div>
 				</div>
@@ -610,25 +610,28 @@ require_once __ROOT__ . '/inc/header.php';
 ?>
 
 <!-- Affiliate Section -->
-<section class="affiliate-section space-50-top-bottom fill-light" id="affiliate-section" data-section-title="Affiliate Section" data-section-slug="affiliate-section">
+<section class="affiliate-section space-50-top fill-neutral-2" id="affiliate-section" data-section-title="Affiliate Section" data-section-slug="affiliate-section">
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
-				<div class="h2 text-uppercase space-min-bottom">Affiliates</div>
+				<div class="h2 text-uppercase space-min-bottom">Knowledge Network</div>
 				<div class="underline columns small-4 medium-3 large-2 space-min-bottom"><span class="fill-teal"></span></div>
 			</div>
 		</div>
 	</div>
 	<!-- Affiliate Logos -->
 	<style>
-		.affiliate .thumbnail {
+		.affiliate-section {
+			box-shadow: inset 0 0 2px 2px rgba(0,0,0,0.05), inset 0 0 var(--space-min) 2px rgba(0,0,0,0.05);
+		}
+		.affiliate-section .affiliate .thumbnail {
 			padding-top: 66.666%;
 			background-size: contain;
 			background-position: center center;
 			background-repeat: no-repeat;
 		}
 	</style>	
-	<div class="affiliates row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%); --fade-right: linear-gradient( to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%);">
+	<div class="affiliates row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(227, 226, 216, 0) 0%, rgba(227, 226, 216, 1) 50%); --fade-right: linear-gradient( to right, rgba(227, 226, 216, 0) 0%, rgba(227, 226, 216, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
 			<?php foreach ( $affiliateLogos as $logo ) : ?>
 				<div class="affiliate carousel-list-item js_carousel_item js_program">
