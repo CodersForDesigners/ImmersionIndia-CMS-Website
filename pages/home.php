@@ -380,6 +380,104 @@ require_once __ROOT__ . '/inc/header.php';
 </section>
 <!-- END: Programs Section -->
 
+<!-- Travel Section -->
+<section class="travel articles-section space-100-top-bottom fill-neutral-1" id="section-articles" data-section-title="Articles Section" data-section-slug="articles-section">
+	<div class="row">
+		<div class="container">
+			<div class="columns small-12 medium-10 medium-offset-1">
+				<div class="h2 text-uppercase space-min-bottom">Travel Programs</div>
+				<div class="row">
+					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-teal"></span></div>
+				</div>
+				<div class="article-filter space-25-bottom">
+					<div class="feedback p text-neutral-4 opacity-50 space-min-bottom">
+						<img class="inline-middle" width="16" src="../media/icon/icon-filter-dark.svg<?= $ver ?>">
+						<span class="inline-middle js_post_filter_status_message" data-text-initial="Select to Filter by Type of Articles"></span>
+					</div>
+					<div class="toggle">
+						<?php foreach ( $postCategories as $category ) : ?>
+							<label class="tag inline">
+								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= strtolower( $category ) ?>">
+								<span class="p"><span class="check"></span><?= $category ?></span>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="articles row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%); --fade-right: linear-gradient( to right, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%);">
+		<div class="carousel-list js_carousel_content">
+			<?php foreach ( $posts as $post ) : ?>
+				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post->get( 'category' ) ) ?>">
+					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post->get( 'featuredImage' ) ?: $thumbnailFallbackImage ?>' );">
+						<div class="tag small text-uppercase"><?= $post->get( 'category' ) ?></div>
+					</div>
+					<div class="description space-min-top-bottom">
+						<a href="<?= $post->get( 'slug' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $post->get( 'title' ) ?></a>
+						<div class="excerpt p"><?= $post->get( 'excerpt' ) ?></div>
+					</div>
+					<a href="<?= $post->get( 'slug' ) ?>" class="button block fill-teal">Read The Full Article</a>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<div class="carousel-controls clearfix">
+			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-dark.svg<?= $ver ?>"></button></div>
+			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-dark.svg<?= $ver ?>"></button></div>
+		</div>
+	</div>
+</section>
+<!-- END: Travel Section -->
+
+<!-- Virtual Section -->
+<section class="virtual articles-section space-100-top-bottom fill-dark" id="section-articles" data-section-title="Articles Section" data-section-slug="articles-section">
+	<div class="row">
+		<div class="container">
+			<div class="columns small-12 medium-10 medium-offset-1">
+				<div class="h2 text-uppercase space-min-bottom">Virtual Programs</div>
+				<div class="row">
+					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-teal"></span></div>
+				</div>
+				<div class="article-filter space-25-bottom">
+					<div class="feedback p text-neutral-4 opacity-50 space-min-bottom">
+						<img class="inline-middle" width="16" src="../media/icon/icon-filter-dark.svg<?= $ver ?>">
+						<span class="inline-middle js_post_filter_status_message" data-text-initial="Select to Filter by Type of Articles"></span>
+					</div>
+					<div class="toggle">
+						<?php foreach ( $postCategories as $category ) : ?>
+							<label class="tag inline">
+								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= strtolower( $category ) ?>">
+								<span class="p"><span class="check"></span><?= $category ?></span>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="articles row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(35, 31, 32, 0) 0%, rgba(35, 31, 32, 1) 50%); --fade-right: linear-gradient( to right, rgba(35, 31, 32, 0) 0%, rgba(35, 31, 32, 1) 50%);">
+		<div class="carousel-list js_carousel_content">
+			<?php foreach ( $posts as $post ) : ?>
+				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post->get( 'category' ) ) ?>">
+					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post->get( 'featuredImage' ) ?: $thumbnailFallbackImage ?>' );">
+						<div class="tag small text-uppercase"><?= $post->get( 'category' ) ?></div>
+					</div>
+					<div class="description space-min-top-bottom">
+						<a href="<?= $post->get( 'slug' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $post->get( 'title' ) ?></a>
+						<div class="excerpt p"><?= $post->get( 'excerpt' ) ?></div>
+					</div>
+					<a href="<?= $post->get( 'slug' ) ?>" class="button block fill-teal">Read The Full Article</a>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<div class="carousel-controls clearfix">
+			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-dark.svg<?= $ver ?>"></button></div>
+			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-dark.svg<?= $ver ?>"></button></div>
+		</div>
+	</div>
+</section>
+<!-- END: Virtual Section -->
+
 <!-- Articles Section -->
 <section class="articles-section space-100-top-bottom fill-neutral-2" id="section-articles" data-section-title="Articles Section" data-section-slug="articles-section">
 	<div class="row">
