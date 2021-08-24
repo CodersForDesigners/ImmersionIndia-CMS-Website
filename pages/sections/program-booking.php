@@ -43,6 +43,26 @@ function programBooking ( $programs ) {
 									<input type="text" id="js_form_input_institution" class="block">
 								</label>
 							</div>
+							<!-- Program Type Selector-->
+							<div class="form-row columns small-12 space-min-bottom" style="padding-right: 0;">
+								<div class="program-selector row">
+									<label class="columns small-12 space-min-bottom block">
+										<span class="label strong text-uppercase">Type of Program</span>
+									</label>
+									<label class="travel columns small-6 space-min-bottom space-min-right inline">
+										<input class="visuallyhidden" type="radio" name="program-toggle" value="travel">
+										<span class="button block fill-pink"><span class="check"></span>Travel Series</span>
+									</label>
+									<label class="virtual columns small-6 space-min-bottom space-min-left inline">
+										<input class="visuallyhidden" type="radio" name="program-toggle" value="virtual">
+										<span class="button block fill-teal"><span class="check"></span>Virtual Series</span>
+									</label>
+								</div>
+							</div>
+							<div class="form-row columns small-12">
+								<!-- Empty Slot -->
+							</div>
+							<!-- END: Program Type Selector-->
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase">Choose a Program</span>

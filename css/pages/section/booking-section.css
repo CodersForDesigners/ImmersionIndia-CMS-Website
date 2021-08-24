@@ -35,3 +35,112 @@
 @media( min-width: 1480px ) {
 	.booking-section .email-action .icon img { width: 80px; }
 }
+
+
+
+/* -- Program Selector -- */
+.booking-section .program-selector label input + .button {
+	font-weight: 700;
+	font-size: 1.2rem;
+	letter-spacing: 0.5px;
+	padding-left: 10px;
+	padding-right: 8px;
+	text-align: left;
+}
+.booking-section .program-selector .travel {}
+.booking-section .program-selector .virtual {}
+
+.booking-section .program-selector label input + .button * { pointer-events: none; }
+
+.booking-section .program-selector label input:not(:checked) + .button {
+	background-color: transparent;
+}
+.booking-section .program-selector label input:not(:checked) + .button.fill-teal {
+	color: var(--teal);
+	box-shadow: inset 0px 0px 0px 2px var(--teal);
+}
+.booking-section .program-selector label input:not(:checked) + .button.fill-pink {
+	color: var(--pink);
+	box-shadow: inset 0px 0px 0px 2px var(--pink);
+}
+
+.booking-section .program-selector label input + .button .check {
+	position: relative;
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border-radius: 2px;
+	transform: translateY(2.5px);
+	margin-right: 7px;
+}
+.booking-section .program-selector label input + .button.fill-teal .check {
+	background-color: transparent;
+	box-shadow: 0px 0px 0px 2px var(--teal);
+}
+.booking-section .program-selector label input + .button.fill-pink .check {
+	background-color: transparent;
+	box-shadow: 0px 0px 0px 2px var(--pink);
+}
+.booking-section .program-selector label input:checked + .button.fill-teal .check,
+.booking-section .program-selector label input:checked + .button.fill-pink .check {
+	background-color: var(--light);
+}
+.booking-section .program-selector label input:checked + .button.fill-teal .check:before,
+.booking-section .program-selector label input:checked + .button.fill-pink .check:before {
+	content: '\2713';
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 16px;
+	transform: translate(-52%, -49%);
+}
+
+.booking-section .program-selector label input:checked + .button.fill-teal .check:before { color: var(--teal); }
+.booking-section .program-selector label input:checked + .button.fill-pink .check:before { color: var(--pink); }
+
+@media( min-width: 640px ) {
+	.booking-section .program-selector label input + .button {
+		padding-left: 12px;
+		padding-right: 10px;
+	}
+}
+@media( min-width: 1040px ) {
+	.booking-section .program-selector label input + .button {
+		padding-left: 14px;
+		padding-right: 12px;
+		font-size: 1.4rem;
+	}
+}
+@media( min-width: 1480px ) {
+	.booking-section .program-selector label input + .button {
+		padding-left: 17px;
+		padding-right: 14px;
+		font-size: 1.8rem;
+		border-radius: 5px;
+	}
+	.booking-section .program-selector label input:not(:checked) + .button.fill-teal {
+		box-shadow: inset 0px 0px 0px 3px var(--teal);
+	}
+	.booking-section .program-selector label input:not(:checked) + .button.fill-pink {
+		box-shadow: inset 0px 0px 0px 3px var(--pink);
+	}
+	.booking-section .program-selector label input + .button .check {
+		width: 20px;
+		height: 20px;
+		border-radius: 3px;
+		margin-right: 10px;
+		transform: translateY(3px);
+	}
+	.booking-section .program-selector label input + .button.fill-teal .check {
+		box-shadow: 0px 0px 0px 3px var(--teal);
+	}
+	.booking-section .program-selector label input + .button.fill-pink .check {
+		box-shadow: 0px 0px 0px 3px var(--pink);
+	}
+	.booking-section .program-selector label input:checked + .button.fill-teal .check:before,
+	.booking-section .program-selector label input:checked + .button.fill-pink .check:before {
+		font-size: 20px;
+		transform: translate(-52%, -48%);
+	}
+}

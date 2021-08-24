@@ -353,7 +353,7 @@ require_once __ROOT__ . '/inc/header.php';
 <!-- END: Quote Section -->
 
 <!-- Programs Section -->
-<section class="programs-section space-100-top-bottom fill-neutral-1" id="programs-section" data-section-title="Programs Section" data-section-slug="programs-section">
+<section class="hidden programs-section space-100-top-bottom fill-neutral-1" id="programs-section" data-section-title="Programs Section" data-section-slug="programs-section">
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
@@ -461,6 +461,7 @@ require_once __ROOT__ . '/inc/header.php';
 			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-dark.svg<?= $ver ?>"></button></div>
 		</div>
 	</div>
+	<div class="art splash-3"><img class="block" src="../media/section-background/watercolor-splash-3.png<?= $ver ?>"></div>
 </section>
 <!-- END: Travel Section -->
 
