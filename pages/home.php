@@ -131,6 +131,19 @@ $brochures = [
 ];
 
 
+
+/*
+ |
+ | Affiliate Logos
+ |
+ */
+
+$affiliates = CMS::get( 'affiliate_logos' );
+$affiliateLogos = [ ];
+foreach ( $affiliates as $logo )
+	$affiliateLogos[ ] = $logo[ 'sizes' ][ 'small' ] ?? $logo[ 'sizes' ][ 'thumbnail' ] ?? $logo[ 'sizes' ][ 'medium' ] ?? $logo[ 'url' ] ?? '/media/fallback-image.png' ;
+
+
 /*
  |
  | Members
@@ -573,6 +586,42 @@ require_once __ROOT__ . '/inc/header.php';
 	// Program Booking section
 	BFS\UI\programBooking( $programs )
 ?>
+
+<!-- Affiliate Section -->
+<section class="affiliate-section space-50-top-bottom fill-light" id="affiliate-section" data-section-title="Affiliate Section" data-section-slug="affiliate-section">
+	<div class="row">
+		<div class="container">
+			<div class="columns small-12 medium-10 medium-offset-1">
+				<div class="h2 text-uppercase space-min-bottom">Affiliates</div>
+				<div class="underline columns small-4 medium-3 large-2 space-min-bottom"><span class="fill-teal"></span></div>
+			</div>
+		</div>
+	</div>
+	<!-- Affiliate Logos -->
+	<style>
+		.affiliate .thumbnail {
+			padding-top: 66.666%;
+			background-size: contain;
+			background-position: center center;
+			background-repeat: no-repeat;
+		}
+	</style>	
+	<div class="affiliates row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%); --fade-right: linear-gradient( to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%);">
+		<div class="carousel-list js_carousel_content">
+			<?php foreach ( $affiliateLogos as $logo ) : ?>
+				<div class="affiliate carousel-list-item js_carousel_item js_program">
+					<div class="thumbnail" style="background-image: url('<?= $logo ?>');"></div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<div class="carousel-controls clearfix">
+			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-light.svg<?= $ver ?>"></button></div>
+			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-light.svg<?= $ver ?>"></button></div>
+		</div>
+	</div>
+	<!-- END: Affiliate Logos -->
+</section>
+<!-- END: Affiliate Section -->
 
 <!-- Team Section -->
 <section class="team-section space-100-top-bottom fill-dark" id="section-team" data-section-title="Team Section" data-section-slug="team-section">
