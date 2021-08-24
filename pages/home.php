@@ -70,10 +70,21 @@ $travelPrograms = CMS::getPostsOf( 'travel_programs' );
 foreach ( $travelPrograms as $travelProgram ) {
 	$travelProgram->set( 'title', $travelProgram->get( 'post_title' ) );
 	$travelProgram->set( 'type', 'Travel' );
+	$travelProgram->set( 'excerpt', $travelProgram->get( 'post_excerpt' ) ?: substr( wp_strip_all_tags( $travelProgram->get( 'post_content' ) ), 0, 415 ) );
 	$image = $travelProgram->get( 'image' );
-	$travelProgram->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? '/media/fallback-image.png' );
+	$travelProgram->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? $thumbnailFallbackImage );
 	$travelProgram->set( 'attachment', $travelProgram->get( 'details_pdf' )[ 'url' ] ?? '#' );
 }
+$travelProgramCategories = array_map( function ( $term ) {
+	return [
+		'name' => $term->name,
+		'slug' => $term->slug
+	];
+}, get_terms( [
+	'taxonomy' => 'travel_program_category',
+	'hide_empty' => false,
+	'public' => true
+] ) );
 
 
 
@@ -86,10 +97,21 @@ $virtualSeries = CMS::getPostsOf( 'virtual_series' );
 foreach ( $virtualSeries as $series ) {
 	$series->set( 'title', $series->get( 'post_title' ) );
 	$series->set( 'type', 'Virtual' );
+	$series->set( 'excerpt', $series->get( 'post_excerpt' ) ?: substr( wp_strip_all_tags( $series->get( 'post_content' ) ), 0, 415 ) );
 	$image = $series->get( 'image' );
-	$series->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? '/media/fallback-image.png' );
+	$series->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? $thumbnailFallbackImage );
 	$series->set( 'attachment', $series->get( 'details_pdf' )[ 'url' ] ?? '#' );
 }
+$virtualSeriesCategories = array_map( function ( $term ) {
+	return [
+		'name' => $term->name,
+		'slug' => $term->slug
+	];
+}, get_terms( [
+	'taxonomy' => 'virtual_series_category',
+	'hide_empty' => false,
+	'public' => true
+] ) );
 
 
 
@@ -395,10 +417,10 @@ require_once __ROOT__ . '/inc/header.php';
 						<span class="inline-middle js_post_filter_status_message" data-text-initial="Select to Filter by Type of Articles"></span>
 					</div>
 					<div class="toggle">
-						<?php foreach ( $postCategories as $category ) : ?>
+						<?php foreach ( $travelProgramCategories as $category ) : ?>
 							<label class="tag inline">
-								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= strtolower( $category ) ?>">
-								<span class="p"><span class="check"></span><?= $category ?></span>
+								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= $category[ 'slug' ] ?>">
+								<span class="p"><span class="check"></span><?= $category[ 'name' ] ?></span>
 							</label>
 						<?php endforeach; ?>
 					</div>
@@ -408,16 +430,16 @@ require_once __ROOT__ . '/inc/header.php';
 	</div>
 	<div class="articles row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%); --fade-right: linear-gradient( to right, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
-			<?php foreach ( $posts as $post ) : ?>
-				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post->get( 'category' ) ) ?>">
-					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post->get( 'featuredImage' ) ?: $thumbnailFallbackImage ?>' );">
-						<div class="tag small text-uppercase"><?= $post->get( 'category' ) ?></div>
+			<?php foreach ( $travelPrograms as $program ) : ?>
+				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $program->get( 'category' ) ) ?>">
+					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $program->get( 'image' ) ?>' );">
+						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $post->get( 'slug' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $post->get( 'title' ) ?></a>
-						<div class="excerpt p"><?= $post->get( 'excerpt' ) ?></div>
+						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $post->get( 'slug' ) ?>" class="button block fill-teal">Read The Full Article</a>
+					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-teal">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -444,10 +466,10 @@ require_once __ROOT__ . '/inc/header.php';
 						<span class="inline-middle js_post_filter_status_message" data-text-initial="Select to Filter by Type of Articles"></span>
 					</div>
 					<div class="toggle">
-						<?php foreach ( $postCategories as $category ) : ?>
+						<?php foreach ( $virtualSeriesCategories as $category ) : ?>
 							<label class="tag inline">
-								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= strtolower( $category ) ?>">
-								<span class="p"><span class="check"></span><?= $category ?></span>
+								<input class="visuallyhidden js_post_filter" type="checkbox" name="article-toggle" value="<?= $category[ 'slug' ] ?>">
+								<span class="p"><span class="check"></span><?= $category[ 'name' ] ?></span>
 							</label>
 						<?php endforeach; ?>
 					</div>
@@ -457,16 +479,16 @@ require_once __ROOT__ . '/inc/header.php';
 	</div>
 	<div class="articles row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(35, 31, 32, 0) 0%, rgba(35, 31, 32, 1) 50%); --fade-right: linear-gradient( to right, rgba(35, 31, 32, 0) 0%, rgba(35, 31, 32, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
-			<?php foreach ( $posts as $post ) : ?>
-				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $post->get( 'category' ) ) ?>">
-					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $post->get( 'featuredImage' ) ?: $thumbnailFallbackImage ?>' );">
-						<div class="tag small text-uppercase"><?= $post->get( 'category' ) ?></div>
+			<?php foreach ( $virtualSeries as $program ) : ?>
+				<div class="article carousel-list-item js_carousel_item js_post" data-category="<?= strtolower( $program->get( 'category' ) ) ?>">
+					<div class="thumbnail fill-neutral-3" style="background-image: url( '<?= $program->get( 'image' ) ?>' );">
+						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $post->get( 'slug' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $post->get( 'title' ) ?></a>
-						<div class="excerpt p"><?= $post->get( 'excerpt' ) ?></div>
+						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $post->get( 'slug' ) ?>" class="button block fill-teal">Read The Full Article</a>
+					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-teal">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
