@@ -422,7 +422,7 @@ require_once __ROOT__ . '/inc/header.php';
 			<div class="columns small-12 medium-10 medium-offset-1">
 				<div class="h2 text-uppercase space-min-bottom">Travel Programs</div>
 				<div class="row">
-					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-teal"></span></div>
+					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-pink"></span></div>
 				</div>
 				<div class="article-filter space-25-bottom">
 					<div class="feedback p text-neutral-4 opacity-50 space-min-bottom">
@@ -449,10 +449,10 @@ require_once __ROOT__ . '/inc/header.php';
 						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-pink strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
 						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-teal">View Program</a>
+					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-pink">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -471,7 +471,7 @@ require_once __ROOT__ . '/inc/header.php';
 			<div class="columns small-12 medium-10 medium-offset-1">
 				<div class="h2 text-uppercase space-min-bottom">Virtual Programs</div>
 				<div class="row">
-					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-teal"></span></div>
+					<div class="underline columns small-4 medium-3 large-2 space-25-bottom"><span class="fill-orange"></span></div>
 				</div>
 				<div class="article-filter space-25-bottom">
 					<div class="feedback p text-neutral-4 opacity-50 space-min-bottom">
@@ -498,16 +498,16 @@ require_once __ROOT__ . '/inc/header.php';
 						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-teal strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-orange strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
 						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-teal">View Program</a>
+					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-orange">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
 		<div class="carousel-controls clearfix">
-			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-dark.svg<?= $ver ?>"></button></div>
-			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-dark.svg<?= $ver ?>"></button></div>
+			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-light.svg<?= $ver ?>"></button></div>
+			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-light.svg<?= $ver ?>"></button></div>
 		</div>
 	</div>
 </section>
@@ -637,8 +637,8 @@ require_once __ROOT__ . '/inc/header.php';
 			<?php endforeach; ?>
 		</div>
 		<div class="carousel-controls clearfix">
-			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-light.svg<?= $ver ?>"></button></div>
-			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-light.svg<?= $ver ?>"></button></div>
+			<div class="prev float-left"><button class="button js_pager" data-dir="left"><img class="block" src="../media/icon/icon-prev-dark.svg<?= $ver ?>"></button></div>
+			<div class="next float-right"><button class="button js_pager" data-dir="right"><img class="block" src="../media/icon/icon-next-dark.svg<?= $ver ?>"></button></div>
 		</div>
 	</div>
 	<!-- END: Affiliate Logos -->
