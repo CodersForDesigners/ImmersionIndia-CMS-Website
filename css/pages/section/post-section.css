@@ -131,9 +131,10 @@
 	margin-bottom: var(--space-25);
 }
 
+/* Place the figcaption at the bottom of the image */
 .post-section .wp-block-gallery figcaption {
 	position: absolute;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	width: 100%;
 	height: auto;
@@ -167,6 +168,10 @@
 /* -- Slicks Resets -- */
 .post-section .wp-block-gallery .blocks-gallery-grid.slick-slider {
 	margin-bottom: 0;
+}
+	/* There is a bug on Chrome where each carousel item has additional vacant vertical space */
+.post-section .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-slide {
+	height: auto;
 }
 .post-section .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-dots {
 	bottom: 5px;
@@ -242,6 +247,12 @@
 	margin-left: 50%; 
 	transform: translateX(-50%);
 }
+/* for reasons unknown, WordPress generates cruft markup that breaks the layout */
+.post-section .wp-block-gallery br,
+.post-section .wp-block-gallery p {
+	display: none;
+}
+
 .post-section .wp-block-gallery .blocks-gallery-grid {
 	background-color: var(--dark);
 }

@@ -16,7 +16,8 @@ wp.domReady( function() {
 		"core/separator",
 		"core/block",
 		"core/spacer",
-		"acf/bfs-youtube-embed"
+		"acf/bfs-youtube-embed",
+		"acf/bfs-gallery"
 	];
 
 	let allBlockTypes = wp.blocks.getBlockTypes();

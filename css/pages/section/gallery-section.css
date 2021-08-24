@@ -8,6 +8,10 @@
 .gallery-section .slide-gallery.slick-slider {
 	margin-bottom: 0;
 }
+	/* There is a bug on Chrome where each carousel item has additional vacant vertical space */
+.gallery-section .slide-gallery.slick-slider .slick-slide {
+	height: auto;
+}
 
 .gallery-section .slide-gallery.slick-slider .slick-dots {
 	bottom: 5px;
