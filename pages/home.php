@@ -70,6 +70,9 @@ $travelPrograms = CMS::getPostsOf( 'travel_programs' );
 foreach ( $travelPrograms as $travelProgram ) {
 	$travelProgram->set( 'title', $travelProgram->get( 'post_title' ) );
 	$travelProgram->set( 'type', 'Travel' );
+	$postCategories = get_the_terms( $travelProgram->get( 'ID' ), 'travel_program_category' );
+	$postCategory = empty( $postCategories ) ? '' : $postCategories[ 0 ]->name;
+	$travelProgram->set( 'category', $postCategory );
 	$travelProgram->set( 'excerpt', $travelProgram->get( 'post_excerpt' ) ?: substr( wp_strip_all_tags( $travelProgram->get( 'post_content' ) ), 0, 415 ) );
 	$image = $travelProgram->get( 'image' );
 	$travelProgram->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? $thumbnailFallbackImage );
@@ -97,6 +100,9 @@ $virtualSeries = CMS::getPostsOf( 'virtual_series' );
 foreach ( $virtualSeries as $series ) {
 	$series->set( 'title', $series->get( 'post_title' ) );
 	$series->set( 'type', 'Virtual' );
+	$postCategories = get_the_terms( $series->get( 'ID' ), 'virtual_series_category' );
+	$postCategory = empty( $postCategories ) ? '' : $postCategories[ 0 ]->name;
+	$series->set( 'category', $postCategory );
 	$series->set( 'excerpt', $series->get( 'post_excerpt' ) ?: substr( wp_strip_all_tags( $series->get( 'post_content' ) ), 0, 415 ) );
 	$image = $series->get( 'image' );
 	$series->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? $thumbnailFallbackImage );
