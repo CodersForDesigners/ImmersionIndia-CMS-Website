@@ -3,22 +3,29 @@ $( function () {
 
 
 
+// Exports
+window.__BFS = window.__BFS || { }
+window.__BFS.exports = window.__BFS.exports || { }
+window.__BFS.exports.BFSForm = BFSForm
+
+
+
+
 
 
 /*
- * ----- the Form class
+ |
+ | the Form class
+ |
  */
-function BFSForm ( className ) {
+function BFSForm ( selector ) {
 
-	/*
-	 * ----- Get a reference to the form
-	 */
-	if ( ! className )
-		throw new Error( "Form class name not provided." );
-	var domForms = document.getElementsByClassName( className );
-	if ( ! domForms.length )
-		throw new Error( "Form could not be found." );
-	this.domForm = domForms[ 0 ];
+	selector = selector.trim()
+
+	if ( ! selector )
+		this.formSelector = "html"
+	if ( selector )
+		this.formSelector = selector
 
 	this.fields = { };
 
@@ -40,225 +47,154 @@ BFSForm.getErrorResponse = function getErrorResponse () {
 	error.code = code;
 	return error;
 }
+BFSForm.prototype.getFormNode = function getFormNode () {
+	return this.$formNode || $( this.formSelector )
+}
+BFSForm.prototype.bind = function bind ( formNode ) {
+	var $formNode
+	if ( formNode instanceof HTMLElement )
+		$formNode = $( formNode )
+	else if ( ! ( formNode instanceof jQuery ) )
+		throw new Error( "A DOM node or jQuery object must be provided." )
+	else
+		$formNode = formNode
+
+	// Clone the form instance
+	var newBFSForm = new BFSForm( this.formSelector )
+	newBFSForm.$formNode = $formNode
+	newBFSForm.submit = this.submit
+		// Clone the fields
+	for ( let fieldName in this.fields ) {
+		newBFSForm.fields[ fieldName ] = Object.create( Object.getPrototypeOf( this.fields[ fieldName ] ) )
+		newBFSForm.fields[ fieldName ].bfsForm = newBFSForm
+	}
+
+	return newBFSForm
+}
+
 BFSForm.prototype.disable = function disable ( fn ) {
-	$( this.domForm ).find( "input, select, button" ).prop( "disabled", true );
+	var $formNode = this.getFormNode()
+	$formNode.find( "input, textarea, select, button" ).prop( "disabled", true );
 	if ( Object.prototype.toString.call( fn ).toLowerCase() === "[object function]" )
-		fn.call( this );
+		fn.call( this, $formNode.get( 0 ) );
 };
 BFSForm.prototype.enable = function enable ( fn ) {
-	$( this.domForm ).find( "input, select, button" ).prop( "disabled", false );
+	var $formNode = this.getFormNode()
+	$formNode.find( "input, textarea, select, button" ).prop( "disabled", false );
 	if ( Object.prototype.toString.call( fn ).toLowerCase() === "[object function]" )
-		fn.call( this );
-};
+		fn.call( this, $formNode.get( 0 ) );
+}
 BFSForm.prototype.giveFeedback = function giveFeedback ( message ) {
-	$( this.domForm ).find( "[ type = 'submit' ]" ).text( message );
+	var $formNode = this.getFormNode()
+	var $submitButton = $formNode.find( "[ type = 'submit' ]" )
+	// Backup the initial label of the button
+	if ( $submitButton.data( "initial-label" ) === void 0 /* i.e. `undefined` */ )
+		$submitButton.data( "initial-label", $submitButton.text() )
+
+	$submitButton.text( message )
+}
+BFSForm.prototype.setSubmitButtonLabel = function setSubmitButtonLabel ( label ) {
+	var $formNode = this.getFormNode()
+	var $submitButton = $formNode.find( "[ type = 'submit' ]" )
+	var label = label || $submitButton.data( "initial-label" );
+	$submitButton.text( label );
 }
 
 BFSForm.prototype.getFieldValue = function getFieldValue ( domField ) {
-	// var elementTag = domField.nodeName.toLowerCase();
-	// var inputType;
-	// if ( elementTag === "input" )
-	// 	inputType = domField.getAttribute( "type" );
-	return domField.value;
+	var elementTag = domField.nodeName.toLowerCase();
+	var value;
+
+	if ( elementTag === "input" ) {
+		var inputType = domField.getAttribute( "type" );
+		if ( inputType === "radio" )
+			value = domField.checked ? domField.value : null;
+		else
+			value = domField.value;
+	}
+	else if ( elementTag === "textarea" ) {
+		value = domField.value;
+	}
+	return value;
 }
 
-BFSForm.prototype.addField = function addField ( name, isRequired, domFields, fn ) {
-	if ( ! Array.isArray( domFields ) )
-		domFields = [ domFields ];
-	this.fields[ name ] = {
-		domFields: domFields,
-		validateAndAssemble: fn,
-		isRequired: isRequired
-	};
-};
+BFSForm.prototype.addField = function addField ( name, selectors, fn ) {
+	if ( ! Array.isArray( selectors ) )
+		selectors = [ selectors ];
+
+	// The approach taken below is solely to serve the requirements of the `bind` method
+		// When a BFSForm is bound to a form DOM node (using the `bind` method), we clone the BFSForm
+		//  and swap out the context under which all the methods
+		//  (especially the ones created for the field below) operate against.
+		// The approach of storing the "field"'s properties and methods in its prototype is to facilitate
+		//  cloning of the BFSForm with a low memory usage overhead. The fields property on the new
+		//  BFSForm instance is the exact same object as that on the source BFSForm instance. Only the
+		//  context (i.e. `bfsForm` property in this case) is different.
+	let field = Object.create( {
+		name,
+		selectors,
+		set ( valueParts ) {
+			return this.bfsForm.setFieldValue( this.name, valueParts )
+		},
+		focus ( domNodeIndex ) {
+			return this.bfsForm.focus( this.name, domNodeIndex )
+		},
+		validateAndAssemble ( ...args ) {
+			try {
+				return fn.apply( null, args )
+			}
+			catch ( e ) {
+				e.fieldName = this.name
+				throw e
+			}
+		},
+	} )
+	// Associate the field with the BFSForm instance
+	field.bfsForm = this
+
+	this.fields[ name ] = field
+}
+
+BFSForm.prototype.setFieldValue = function setFieldValue ( name, valueParts ) {
+	if ( ! Array.isArray( valueParts ) )
+		valueParts = [ valueParts ];
+
+	var $formNode = this.getFormNode()
+	var field = this.fields[ name ];
+	var $fields = field.selectors.map( s => $formNode.find( s ) )
+	$fields.forEach( function ( $el, index ) {
+		$el.val( valueParts[ index ] )
+	} )
+}
 
 BFSForm.prototype.getData = function getData () {
+	var $formNode = this.getFormNode()
+
 	this.data = { };
 	var _key;
 	for ( _key in this.fields ) {
 		var field = this.fields[ _key ];
-		var valueParts = field.domFields.map( this.getFieldValue );
-		var value = field.validateAndAssemble( valueParts, field.isRequired || false );
+		var domFields = field.selectors.map( s => $formNode.find( s ).get( 0 ) )
+		var valueParts = domFields.map( this.getFieldValue );
+		var value = field.validateAndAssemble( valueParts );
 		this.data[ _key ] = value;
 	}
+
 	return this.data;
-};
-
-
-
-
-
-/*
- * ----- Set up the enquiry form
- */
-var enquiryForm = new BFSForm( "js_enquiry_form" );
-	var domInputName = document.getElementById( "js_form_input_name" );
-	var domInputEmail = document.getElementById( "js_form_input_email" );
-	var domInputPhoneNumber = document.getElementById( "js_form_input_phone" );
-	var domInputInstitution = document.getElementById( "js_form_input_institution" );
-	var domInputProgramId = document.getElementById( "js_form_input_program_id" );
-	var domInputProgram = document.getElementById( "js_form_input_program" );
-	var domInputDate = document.getElementById( "js_form_input_date" );
-
-// Synchronise the program id with the selected program
-$( domInputProgram ).on( "change", function ( event ) {
-	var programId = $( event.target ).closest( "select" ).find( ":selected" ).attr( "id" );
-	domInputProgramId.value = programId;
-} );
-
-// Set up the enquiry form's input fields, data validators and data assemblers
-	// Name
-enquiryForm.addField( "name", true, domInputName, function ( values, isRequired ) {
-	var name = values[ 0 ].trim();
-
-	if ( isRequired )
-		if ( name === "" )
-			throw new Error( "Please provide your name." );
-
-	if ( name.match( /\d/ ) )
-		throw new Error( "Please provide a valid name." );
-
-	return name;
-} );
-
-	// Email address
-enquiryForm.addField( "emailAddress", true, domInputEmail, function ( values, isRequired ) {
-	var emailAddress = values[ 0 ].trim();
-
-	if ( isRequired )
-		if ( emailAddress === "" )
-			throw new Error( "Please provide your email address." );
-
-	if ( emailAddress.indexOf( "@" ) === -1 )
-		throw new Error( "Please provide a valid email address." );
-
-	return emailAddress;
-} );
-
-	// Phone number
-enquiryForm.addField( "phoneNumber", false, domInputPhoneNumber, function ( values ) {
-	var phoneNumber = values[ 0 ].trim();
-
-	if ( phoneNumber.length > 1 )
-		if ( ! (
-			phoneNumber.match( /^\+?\d[\d\-]+\d$/ )	// this is not a perfect regex, but it's close
-			&& phoneNumber.replace( /\D/g, "" ).length > 3
-		) )
-			throw new Error( "Please provide a valid phone number." );
-
-	return phoneNumber;
-} );
-
-	// College / University
-enquiryForm.addField( "institution", false, domInputInstitution, function ( values ) {
-	var institution = values[ 0 ].trim();
-
-	if ( institution.length > 1 )
-		if ( institution.replace( /[\d\s]/g ).length < 2 )
-			throw new Error( "Please provide a college or university." );
-
-	return institution;
-} );
-
-	// Study Program Id
-enquiryForm.addField( "programId", false, domInputProgramId, function ( values ) {
-	var programId = values[ 0 ].trim();
-	return programId;
-} );
-
-	// Study Program
-enquiryForm.addField( "program", false, domInputProgram, function ( values ) {
-	var program = values[ 0 ].trim();
-	return program;
-} );
-
-	// Date
-enquiryForm.addField( "date", false, domInputDate, function ( values ) {
-	var date = values[ 0 ].trim();
-	return date;
-} );
-
-enquiryForm.submit = function submit () {
-
-	// var apiEndpoint = __.settings.cupidApiEndpoint;
-	var url = "/server/api/post-enquiry-data.php";
-
-	var ajaxRequest = $.ajax( {
-		url: url,
-		method: "POST",
-		data: JSON.stringify( { data: this.data } ),
-		contentType: "application/json",
-		dataType: "json",
-		// xhrFields: {
-		// 	withCredentials: true
-		// }
-	} );
-
-	return new Promise( function ( resolve, reject ) {
-		ajaxRequest.done( function ( response ) {
-			resolve( response );
-		} );
-		ajaxRequest.fail( function ( jqXHR, textStatus, e ) {
-			var errorResponse = BFSForm.getErrorResponse( jqXHR, textStatus, e );
-			reject( errorResponse );
-		} );
-	} );
-
+}
+// A form field can be comprised of one or more underlying DOM nodes,
+//  hence when a field is to be "focused" on, the index of the DOM node needs to be provided
+BFSForm.prototype.focus = function focus ( name, domNodeIndex ) {
+	var $formNode = this.getFormNode()
+	if ( typeof domNodeIndex !== "number" || Number.isNaN( domNodeIndex ) )
+		domNodeIndex = 0
+	var field = this.fields[ name ]
+	var domFields = field.selectors.map( s => $formNode.find( s ).get( 0 ) )
+	if ( domFields[ domNodeIndex ] )
+		domFields[ domNodeIndex ].focus()
 }
 
 
 
 
-/*
- * ----- Enquiry Form submission handler
- */
-$( document ).on( "submit", ".js_enquiry_form", function ( event ) {
 
-	/*
-	 * ----- Prevent default browser behaviour
-	 */
-	event.preventDefault();
-
-	/*
-	 * ----- Prevent interaction with the form
-	 */
-	enquiryForm.disable();
-
-	/*
-	 * ----- Provide feedback to the user
-	 */
-	enquiryForm.giveFeedback( "Sending..." );
-
-	/*
-	 * ----- Extract data (and report issues if found)
-	 */
-	var data;
-	try {
-		data = enquiryForm.getData();
-	} catch ( error ) {
-		alert( error.message )
-		console.error( error.message )
-		return;
-	}
-
-	/*
-	 * ----- Submit data
-	 */
-	enquiryForm.submit( data )
-		.then( function ( response ) {
-			console.log( response )
-
-			/*
-			 * ----- Provide further feedback to the user
-			 */
-			enquiryForm.giveFeedback( "We'll get in touch shortly" );
-
-		} )
-
-} );
-
-
-
-
-
-} );
+} )

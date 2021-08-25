@@ -26,6 +26,16 @@ $postContent = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $theP
 
 
 
+$travelPrograms = CMS::getPostsOf( 'travel_programs' );
+foreach ( $travelPrograms as $program )
+	$program->set( 'type', 'Travel' );
+$virtualSeries = CMS::getPostsOf( 'virtual_series' );
+foreach ( $virtualSeries as $program )
+	$program->set( 'type', 'Virtual' );
+
+$allPrograms = array_merge( $travelPrograms, $virtualSeries );
+
+
 /*
  |
  | UI Components
@@ -38,6 +48,14 @@ require_once __ROOT__ . '/pages/sections/program-booking.php';
 require_once __ROOT__ . '/inc/header.php';
 
 ?>
+
+<!-- Set up context -->
+<script type="text/javascript">
+	window.__BFS = window.__BFS || { }
+	window.__BFS.env = window.__BFS.env || { }
+	window.__BFS.env.programId = "<?= $thePost->get( 'ID' ) ?>"
+	window.__BFS.env.programType = "<?= $thePost->get( 'type' ) ?>"
+</script>
 
 
 
@@ -85,10 +103,7 @@ require_once __ROOT__ . '/inc/header.php';
 
 <?php
 	// Program Booking section
-	$thePost->set( 'title', $thePost->get( 'post_title' ) );
-	$thePost->set( 'type', 'Travel' );
-	$programs = [ $thePost ];
-	BFS\UI\programBooking( $programs );
+	BFS\UI\programBooking( $allPrograms );
 ?>
 
 

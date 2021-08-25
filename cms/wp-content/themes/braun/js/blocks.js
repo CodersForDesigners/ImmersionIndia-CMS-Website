@@ -10,6 +10,8 @@ wp.domReady( function() {
 		"core/heading",
 		"core/subhead",
 		"core/paragraph",
+		"core/quote",
+		"core/pullquote",
 		"core/image",
 		"core/gallery",
 		"core/list",
@@ -28,3 +30,15 @@ wp.domReady( function() {
 	} );
 
 } );
+
+/*
+ |
+ | Rename the core "Gallery", effectively designating our custom gallery block as the canonical version
+ |
+ */
+wp.hooks.addFilter( "blocks.registerBlockType", "bfs/registerBlockTypeFilter", function ( settings ) {
+	if ( settings.name === "core/gallery" )
+		settings = { ...settings, title: "[DO NOT USE] Gallery (WordPress version)" }
+
+	return settings
+} )
