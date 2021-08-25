@@ -50,11 +50,11 @@ function programBooking ( $programs ) {
 										<span class="label strong text-uppercase">Type of Program</span>
 									</label>
 									<label class="travel columns small-6 space-min-bottom space-min-right inline">
-										<input class="visuallyhidden" type="radio" name="program-toggle" value="travel">
+										<input class="visuallyhidden js_program_type_toggle" type="radio" name="program-toggle" value="Travel">
 										<span class="button block fill-pink"><span class="check"></span>Travel Series</span>
 									</label>
 									<label class="virtual columns small-6 space-min-bottom space-min-left inline">
-										<input class="visuallyhidden" type="radio" name="program-toggle" value="virtual">
+										<input class="visuallyhidden js_program_type_toggle" type="radio" name="program-toggle" value="Virtual">
 										<span class="button block fill-teal"><span class="check"></span>Virtual Series</span>
 									</label>
 								</div>
@@ -70,7 +70,7 @@ function programBooking ( $programs ) {
 									<select class="block js_form_input_program">
 										<option value="" disabled selected>-- Select Program --</option>
 										<?php foreach ( $programs as $program ) : ?>
-											<option id="<?= $program->get( 'ID' ) ?>" value="<?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?>"><?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?> [ <?= $program->get( 'title' ) ?> ]</option>
+											<option id="<?= $program->get( 'ID' ) ?>" value="<?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?>"><?= $program->get( 'subject' ) ?> [ <?= $program->get( 'post_title' ) ?> ]</option>
 										<?php endforeach; ?>
 									</select>
 								</label>
@@ -109,6 +109,47 @@ function programBooking ( $programs ) {
 		</div>
 	</div>
 </section>
+<script type="text/javascript">
+( function () {
+
+	window.__BFS = window.__BFS || { }
+	window.__BFS.UI = window.__BFS.UI || { }
+	window.__BFS.UI.programBookingForm = {
+		allPrograms: [ <?= implode( ',', array_map( function ( $p ) { return $p->getJSON(); }, $programs ) ) ?> ]
+	}
+
+	$( ".js_program_booking_form" ).on( "change", ".js_program_type_toggle", function ( event ) {
+		let programType = event.target.value
+		let programsOfSelectedType = window.__BFS.UI.programBookingForm.allPrograms.filter( p => p.type === programType )
+		let $programSelectorFormInput = $( ".js_form_input_program" )
+		let $defaultOption = $programSelectorFormInput.find( "option:disabled" )
+
+		// Remove the existing program options
+		let $currentOptions = $programSelectorFormInput.find( "option:not(:disabled)" )
+		$currentOptions.remove()
+
+		// Select the default disabled option
+		$defaultOption.prop( "selected", true )
+
+		// Populate the selector input with programs from the selected type
+		let newOptionsString = programsOfSelectedType.map( createProgramOptionMarkup )
+		$programSelectorFormInput.append( newOptionsString )
+
+	} )
+
+	if ( window.__BFS.env && window.__BFS.env.programId ) {
+		$( `.js_program_type_toggle[ value = "${ window.__BFS.env.programType }" ]` ).click()
+		$( `#${ window.__BFS.env.programId }` ).prop( "selected", true )
+	}
+	else
+		$( ".js_program_type_toggle" ).first().click()
+
+	function createProgramOptionMarkup ( program ) {
+		return `<option id="${ program.ID }" value="${ program.type }: ${ program.subject }">${ program.subject } [ ${ program.post_title } ]</option>`
+	}
+
+}() )
+</script>
 <!-- END: Booking Section -->
 <?php
 }
