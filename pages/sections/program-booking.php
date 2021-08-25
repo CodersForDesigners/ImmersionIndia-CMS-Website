@@ -18,29 +18,29 @@ function programBooking ( $programs ) {
 					<div class="underline columns small-4 medium-3 large-2 space-min-bottom"><span class="fill-pink"></span></div>
 					<div class="form columns small-12 large-10">
 						<!-- Form -->
-						<form class="row space-50-bottom js_enquiry_form">
+						<form class="row space-50-bottom js_program_booking_form">
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase required">Full Name</span>
-									<input type="text" id="js_form_input_name" class="block" required>
+									<input type="text" class="block js_form_input_name" required>
 								</label>
 							</div>
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase required">Email ID</span>
-									<input type="text" id="js_form_input_email" class="block" required>
+									<input type="text" class="block js_form_input_email" required>
 								</label>
 							</div>
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase">Phone Number</span>
-									<input type="text" id="js_form_input_phone" class="block">
+									<input type="text" class="block js_form_input_phone">
 								</label>
 							</div>
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase">College/University</span>
-									<input type="text" id="js_form_input_institution" class="block">
+									<input type="text" class="block js_form_input_institution">
 								</label>
 							</div>
 							<!-- Program Type Selector-->
@@ -66,8 +66,8 @@ function programBooking ( $programs ) {
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase">Choose a Program</span>
-									<input type="hidden" id="js_form_input_program_id" name="program-id">
-									<select class="block" id="js_form_input_program">
+									<input type="hidden" class="js_form_input_program_id" name="program-id">
+									<select class="block js_form_input_program">
 										<option value="" disabled selected>-- Select Program --</option>
 										<?php foreach ( $programs as $program ) : ?>
 											<option id="<?= $program->get( 'ID' ) ?>" value="<?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?>"><?= $program->get( 'type' ) ?>: <?= $program->get( 'subject' ) ?> [ <?= $program->get( 'title' ) ?> ]</option>
@@ -78,7 +78,7 @@ function programBooking ( $programs ) {
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
 								<label>
 									<span class="label strong text-uppercase">Suggest a Date</span>
-									<input type="date" id="js_form_input_date" class="block">
+									<input type="date" class="block js_form_input_date">
 								</label>
 							</div>
 							<div class="form-row columns small-12 medium-6 space-min-bottom">
