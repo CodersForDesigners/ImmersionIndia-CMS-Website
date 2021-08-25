@@ -63,15 +63,15 @@ foreach ( $slidePosts as $slide ) {
  | Programs
  |
  */
-$programs = CMS::getPostsOf( 'programs' );
-foreach ( $programs as $program ) {
-	$program->set( 'title', $program->get( 'post_title' ) );
-	$type = $program->get( 'type' );
-	$program->set( 'bgColor', strtolower( $type ) === 'travel' ? 'pink' : 'teal' );
-	$image = $program->get( 'image' );
-	$program->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? '/media/fallback-image.png' );
-	$program->set( 'attachment', $program->get( 'details_pdf' )[ 'url' ] ?? '#' );
-}
+// $programs = CMS::getPostsOf( 'programs' );
+// foreach ( $programs as $program ) {
+// 	$program->set( 'title', $program->get( 'post_title' ) );
+// 	$type = $program->get( 'type' );
+// 	$program->set( 'bgColor', strtolower( $type ) === 'travel' ? 'pink' : 'teal' );
+// 	$image = $program->get( 'image' );
+// 	$program->set( 'image', $image[ 'sizes' ][ 'small' ] ?? $image[ 'sizes' ][ 'thumbnail' ] ?? $image[ 'sizes' ][ 'medium' ] ?? $image[ 'url' ] ?? '/media/fallback-image.png' );
+// 	$program->set( 'attachment', $program->get( 'details_pdf' )[ 'url' ] ?? '#' );
+// }
 
 
 
@@ -368,7 +368,7 @@ require_once __ROOT__ . '/inc/header.php';
 <!-- END: Quote Section -->
 
 <!-- Programs Section -->
-<section class="hidden programs-section space-100-top-bottom fill-neutral-1" id="programs-section" data-section-title="Programs Section" data-section-slug="programs-section">
+<!-- <section class="programs-section space-100-top-bottom fill-neutral-1" id="programs-section" data-section-title="Programs Section" data-section-slug="programs-section">
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
@@ -406,7 +406,7 @@ require_once __ROOT__ . '/inc/header.php';
 	</div>
 	<div class="programs row carousel js_carousel_container" style="--fade-left: linear-gradient( to left, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%); --fade-right: linear-gradient( to right, rgba(242, 243, 235, 0) 0%, rgba(242, 243, 235, 1) 50%);">
 		<div class="carousel-list js_carousel_content">
-			<?php foreach ( $programs as $program ) : ?>
+			<?php foreach ( [ ] as $program ) : ?>
 				<div class="program carousel-list-item js_carousel_item js_program" data-program-type="<?= strtolower( $program->get( 'type' ) ) ?>">
 					<div class="header fill-<?= $program->get( 'bgColor' ) ?> space-min">
 						<div class="type label text-uppercase"><img width="16" src="/media/icon/icon-<?= strtolower( $program->get( 'type' ) ) ?>-light.svg<?= $ver ?>"><span><?= $program->get( 'type' ) ?></span></div>
@@ -427,7 +427,7 @@ require_once __ROOT__ . '/inc/header.php';
 		</div>
 	</div>
 	<div class="art splash-3"><img class="block" src="../media/section-background/watercolor-splash-3.png<?= $ver ?>"></div>
-</section>
+</section> -->
 <!-- END: Programs Section -->
 
 <!-- Travel Section -->
