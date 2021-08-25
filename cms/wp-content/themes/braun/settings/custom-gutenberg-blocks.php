@@ -12,7 +12,7 @@ add_action( 'acf/init', function () {
 	// (custom) Gallery block
 	acf_register_block_type( [
 		'name' => 'bfs-gallery',
-		'title' => __( 'BFS Gallery' ),
+		'title' => __( 'Gallery' ),
 		'description' => __( 'A gallery block that supports captioning as well as linking images.' ),
 		'category' => 'embed',
 		'icon' => 'format-gallery',
