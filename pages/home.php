@@ -279,7 +279,7 @@ require_once __ROOT__ . '/inc/header.php';
 						</div>
 					</div>
 					<div class="columns small-12 large-5 space-25-left">
-						<div class="space-25-bottom">
+						<div class="post-content">
 							<?= $newFeature[ 'content' ] ?>
 						</div>
 						<a href="#programs-section" class="button fill-teal">Register Now</a>
