@@ -25,6 +25,20 @@ $thumbnailFallbackImage = CMS::get( 'list_item_thumbnail_fallback_image / sizes 
 
 /*
  |
+ | NEW Feature Section
+ |
+ */
+$newFeature = [
+	'title' => CMS::get( 'new_feature_title' ),
+	'image' => CMS::get( 'new_feature_image' ),
+	'youtubeVideoId' => CMS::get( 'new_feature_video_embed' ),
+	'content' => CMS::get( 'new_feature_content' ),
+];
+
+
+
+/*
+ |
  | Fact Slides
  |
  */
@@ -256,22 +270,17 @@ require_once __ROOT__ . '/inc/header.php';
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1 large-10">
 				<div class="h4 strong text-teal text-uppercase">New</div>
-				<div class="h2 space-min-bottom">Virtual Learning Series</div>
+				<div class="h2 space-min-bottom"><?= $newFeature[ 'title' ] ?></div>
 				<div class="row">
 					<div class="columns small-12 large-7 space-min-bottom">
 						<!-- video embed -->
-						<div class="video-embed js_video_embed" data-src="Y7oQ8GgWYrE">
+						<div class="video-embed js_video_embed" data-src="<?= $newFeature[ 'youtubeVideoId' ] ?>">
 							<div class="video-loading-indicator"></div>
 						</div>
 					</div>
 					<div class="columns small-12 large-5 space-25-left">
 						<div class="space-25-bottom">
-							<div class="h4 strong space-25-bottom">Live Virtual Sessions</div>
-							<div class="h5"><span class="strong text-teal">— &nbsp;</span> Business Leader Profiles</div>
-							<div class="h5"><span class="strong text-teal">— &nbsp;</span> Case Studies</div>
-							<div class="h5"><span class="strong text-teal">— &nbsp;</span> Problem Solving Workshops</div>
-							<div class="h5"><span class="strong text-teal">— &nbsp;</span> Discussion Groups</div>
-							<div class="h5"><span class="strong text-teal">— &nbsp;</span> Customizable on Request</div>
+							<?= $newFeature[ 'content' ] ?>
 						</div>
 						<a href="#programs-section" class="button fill-teal">Register Now</a>
 					</div>
