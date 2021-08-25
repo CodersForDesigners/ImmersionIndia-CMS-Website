@@ -449,10 +449,10 @@ require_once __ROOT__ . '/inc/header.php';
 						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-pink strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<a href="/travel-programs/<?= $program->get( 'post_name' ) ?>" class="title h5 text-pink strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
 						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-pink">View Program</a>
+					<a href="/travel-programs/<?= $program->get( 'post_name' ) ?>" class="button block fill-pink">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -499,10 +499,10 @@ require_once __ROOT__ . '/inc/header.php';
 						<div class="tag small text-uppercase"><?= $program->get( 'category' ) ?></div>
 					</div>
 					<div class="description space-min-top-bottom">
-						<a href="<?= $program->get( 'post_name' ) ?>" class="title h5 text-orange strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
+						<a href="/virtual-series/<?= $program->get( 'post_name' ) ?>" class="title h5 text-orange strong space-min-bottom"><?= $program->get( 'title' ) ?></a>
 						<div class="excerpt p"><?= $program->get( 'excerpt' ) ?></div>
 					</div>
-					<a href="<?= $program->get( 'post_name' ) ?>" class="button block fill-orange">View Program</a>
+					<a href="/virtual-series/<?= $program->get( 'post_name' ) ?>" class="button block fill-orange">View Program</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
