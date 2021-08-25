@@ -185,6 +185,9 @@
 .travel.articles-section .articles .article .thumbnail .tag {
 	color: var(--pink);
 }
+	.travel.articles-section .articles .article .thumbnail .tag:empty {
+		display: none;
+	}
 
 @media( min-width: 1040px ) {
 	.travel.articles-section .art.splash-3 {
@@ -228,3 +231,6 @@
 .virtual.articles-section .articles .article .thumbnail .tag {
 	color: var(--orange);
 }
+	.virtual.articles-section .articles .article .thumbnail .tag:empty {
+		display: none;
+	}
