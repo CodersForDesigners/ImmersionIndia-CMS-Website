@@ -10,6 +10,8 @@ wp.domReady( function() {
 		"core/heading",
 		"core/subhead",
 		"core/paragraph",
+		"core/quote",
+		"core/pullquote",
 		"core/image",
 		"core/gallery",
 		"core/list",
