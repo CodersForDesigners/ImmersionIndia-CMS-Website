@@ -622,7 +622,7 @@ require_once __ROOT__ . '/inc/header.php';
 
 <?php
 	// Program Booking section
-	BFS\UI\programBooking( $programs )
+	BFS\UI\programBooking( array_merge( $travelPrograms, $virtualSeries ) )
 ?>
 
 <!-- Affiliate Section -->
