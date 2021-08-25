@@ -195,16 +195,26 @@
  */
 
 .wp-block-gallery {
+	position: relative;
 	margin: 0;
 	width: 100%;
-	/*margin-left: 50%;*/
-	/*width: 100vw;*/
-	/*transform: translateX(-50%);*/
-	/*padding: 2px;*/
+	margin-left: 50%;
+	width: 100vw;
+	transform: translateX(-50%);
 }
+
+.post-content .wp-block-gallery { margin-bottom: var(--space-25); }
+
+/* for reasons unknown, WordPress generates cruft markup that breaks the layout */
+.wp-block-gallery br,
+.wp-block-gallery p {
+	display: none;
+}
+
 .wp-block-gallery .blocks-gallery-grid {
 	list-style: none;
 	display: block;
+	background-color: var(--dark);
 }
 .wp-block-gallery .blocks-gallery-grid .blocks-gallery-item {
 	display: inline-block;
@@ -215,11 +225,12 @@
 	vertical-align: top;
 }
 .wp-block-gallery .blocks-gallery-grid .blocks-gallery-item figure {
+	position: relative;
 	display: inline-block;
 	width: auto;
 	height: auto;
 	margin: 0;
-	padding: 2px;
+	padding: 2px 1px;
 }
 .wp-block-gallery .blocks-gallery-grid .blocks-gallery-item figure img {
 	display: inline-block;
@@ -228,14 +239,29 @@
 	object-fit: contain;
 }
 
-.wp-block-gallery .blocks-gallery-caption {
+.wp-block-gallery figcaption {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	font-size: 1.2rem;
 	text-align: center;
-	padding: 5px;
+	color: var(--light);
+	background-color: rgba(0,0,0,0.75);
+	padding: 5px 0;
+}
+.wp-block-gallery > figcaption {
+	top: 100%;
 }
 
 /* -- Slicks Resets -- */
 .post-content .wp-block-gallery .blocks-gallery-grid.slick-slider {
 	margin-bottom: 0;
+}
+/* There is a bug on Chrome where each carousel item has additional vacant vertical space */
+.wp-block-gallery .blocks-gallery-grid.slick-slider .slick-slide {
+	height: auto;
 }
 .post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-dots {
 	bottom: 5px;
@@ -255,11 +281,11 @@
 }
 .post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-next,
 .post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-prev {
-	width: var(--space-75);
-	height: var(--space-75);
+	width: var(--space-100);
+	height: var(--space-100);
 	z-index: 4;
-	background-color: var(--red-2);
-	background-size: 100%;
+	background-color: var(--orange);
+	background-size: 20px;
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -272,46 +298,47 @@
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 	background-image: url('../../../media/icon/icon-next-dark.svg');
-	transform: translate(50%, -50%);
+	/*transform: translate(50%, -50%);*/
 }
 .post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-prev {
 	left: 0;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 	background-image: url('../../../media/icon/icon-prev-dark.svg');
-	transform: translate(-50%, -50%);
+	/*transform: translate(-50%, -50%);*/
 }
 @media( min-width: 640px )  {
 	.wp-block-gallery .blocks-gallery-grid .blocks-gallery-item figure img {
 		height: calc( var(--space-100) * 6 );
 	}
+	.post-section .wp-block-gallery figcaption { font-size: 1.2rem; }
 }
 @media( min-width: 1040px ) {
-	.post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-dots {
-		transform-origin: center bottom;
-		transform: scale(1.2);
-	}
 	.post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-next,
 	.post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-prev {
-		width: var(--space-50);
-		height: var(--space-50);
+		width: var(--space-75);
+		height: var(--space-75);
 	}
 
 	.wp-block-gallery .blocks-gallery-grid .blocks-gallery-item figure img {
 		height: calc( var(--space-100) * 5 );
 	}
+
+	.post-section .wp-block-gallery figcaption { font-size: 1.4rem; }
 }
 @media( min-width: 1480px ) {
-	.post-content .wp-block-gallery .blocks-gallery-grid.slick-slider .slick-dots {
-		transform: scale(1.4);
-	}
 	.wp-block-gallery .blocks-gallery-grid .blocks-gallery-item figure img {
 		height: calc( var(--space-100) * 4 );
 	}
+
+	.wp-block-gallery .blocks-gallery-grid.slick-slider .slick-next,
+	.wp-block-gallery .blocks-gallery-grid.slick-slider .slick-prev {
+		background-size: 24px;
+	}
+
+	.post-section .wp-block-gallery figcaption { font-size: 1.6rem; }
 }
 /* -- END: Slicks Resets -- */
 
-
-/* -- Post Page Overwrites -- */
 
 
