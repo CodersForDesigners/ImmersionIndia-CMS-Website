@@ -82,20 +82,24 @@
 .post-content ul:not(.slick-slider) {
 	position: relative;
 	list-style: inherit;
-	padding-left: var(--space-25);
+	padding-left: 0;
 	padding-bottom: var(--space-25);
 }
 .post-content ul:not(.slick-slider) li:not(.slick-slide) {
-	padding-left: var(--space-min);
+	padding-left: 0;
 	font-size: 1.8rem;
 	margin-bottom: 0;
+	list-style: none;
 }
-.post-content ul:not(.slick-slider) li:not(.slick-slide)::marker {
+.post-content ul:not(.slick-slider) li:not(.slick-slide):before {
+	display: inline-block;
 	content: '\2014';
+	padding-right: var(--space-min);
 	color: var(--teal);
 	font-size: inherit;
 	font-weight: 700;
 	font-family: inherit;
+	line-height: inherit;
 }
 .post-content hr {
 	margin: var(--space-25) 0;
