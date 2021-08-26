@@ -44,6 +44,14 @@ catch ( \Exception $e ) {
 	$error = $e->getMessage();
 }
 if ( ! empty( $error ) ) {
+
+/* ------------------------------- \
+ * Response Preparation
+ \-------------------------------- */
+# Set Headers
+header_remove( 'X-Powered-By' );
+header( 'Content-Type: application/json' );
+	http_response_code( 400 );
 	echo json_encode( [
 		'code' => 400,
 		'message' => 'Data not provided'
@@ -57,6 +65,7 @@ if ( ! empty( $error ) ) {
  * Data Validation
  \-------------------------------------- */
 if ( empty( $input[ 'name' ] ) or empty( $input[ 'emailAddress' ] ) ) {
+	http_response_code( 400 );
 	echo json_encode( [
 		'code' => 400,
 		'message' => 'Data not provided'
@@ -71,8 +80,14 @@ if ( empty( $input[ 'name' ] ) or empty( $input[ 'emailAddress' ] ) ) {
 //  \-------------------------------------- */
 require_once __DIR__ . '/../../conf.php';
 require_once __DIR__ . '/../../inc/utils.php';
+require_once __DIR__ . '/../../inc/cms.php';
 require_once __DIR__ . '/../google-forms.php';
 require_once __DIR__ . '/../mailer.php';
+
+use BFS\CMS;
+if ( CMS_ENABLED )
+	CMS::setupContext();
+
 
 
 
@@ -95,9 +110,6 @@ $date = $input[ 'date' ] ?? '';
 /* ------------------------------------- \
  * Add Enquiry record to the database
  \-------------------------------------- */
-if ( CMS_ENABLED )
-	initWordPress();
-
 # Create the post
 $enquiryId = wp_insert_post( [
 	'post_type' => 'enquiries',
@@ -164,11 +176,13 @@ try {
 	$mailer->send();
 }
 catch ( \Exception $e ) {
+	http_response_code( 500 );
 	echo json_encode( [
 		'code' => 500,
 		'message' => 'The mail could not be sent.',
 		'data' => $e->getMessage()
 	] );
+	exit;
 }
 
 
@@ -176,6 +190,7 @@ catch ( \Exception $e ) {
 /* ------------------------------- \
  * Respond back to the client
  \-------------------------------- */
+http_response_code( 200 );
 echo json_encode( [
 	'code' => 200,
 	'message' => 'Enquiry processed successfully.'
