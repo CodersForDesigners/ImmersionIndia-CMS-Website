@@ -30,7 +30,7 @@ function BFSForm ( selector ) {
 	this.fields = { };
 
 }
-BFSForm.getErrorResponse = function getErrorResponse () {
+BFSForm.getErrorResponse = function getErrorResponse ( jqXHR, textStatus, e ) {
 	var code = -1;
 	var message;
 	if ( jqXHR.responseJSON ) {
