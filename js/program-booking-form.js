@@ -1,6 +1,9 @@
 
 $( function () {
 
+// Imports
+let BFSForm = window.__BFS.exports.BFSForm
+
 
 
 
@@ -10,7 +13,7 @@ $( function () {
  | Set up the Program Booking form
  |
  */
-var programBookingForm = new window.__BFS.exports.BFSForm( ".js_program_booking_form" );
+var programBookingForm = new BFSForm( ".js_program_booking_form" );
 	// var domInputName = document.getElementById( "js_form_input_name" );
 	// var domInputEmail = document.getElementById( "js_form_input_email" );
 	// var domInputPhoneNumber = document.getElementById( "js_form_input_phone" );
