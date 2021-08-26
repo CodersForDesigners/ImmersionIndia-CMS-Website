@@ -2,14 +2,19 @@
 
 require_once __DIR__ . '/../conf.php';
 require_once __DIR__ . '/../inc/utils.php';
+require_once __DIR__ . '/../inc/cms.php';
+
+use BFS\CMS;
 if ( CMS_ENABLED )
-	initWordPress();
+	CMS::setupContext();
 
 
 
 $attachmentURL = '';
-if ( ! empty( $programId ) )
-	$attachmentURL = getContent( null, 'details_pdf -> url', $programId );
+if ( ! empty( $programId ) ) {
+	$programPost = CMS::getPostById( $programId );
+	$attachmentURL = $programPost->get( 'details_pdf / url' );
+}
 
 ?>
 <p>
