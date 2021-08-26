@@ -8,6 +8,7 @@
 
 .articles-section .article-filter .toggle .tag {
 	margin-right: var(--space-min);
+	margin-bottom: var(--space-min);
 }
 
 .articles-section .article-filter .toggle .tag input + span {

@@ -86,6 +86,7 @@
 	padding-bottom: var(--space-25);
 }
 .post-content ul:not(.slick-slider) li:not(.slick-slide) {
+	display: flex; /* this makes the :before behave like ::marker */
 	padding-left: 0;
 	font-size: 1.8rem;
 	margin-bottom: 0;
