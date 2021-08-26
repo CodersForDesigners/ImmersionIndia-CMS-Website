@@ -431,7 +431,7 @@ require_once __ROOT__ . '/inc/header.php';
 <!-- END: Programs Section -->
 
 <!-- Travel Section -->
-<section class="travel articles-section space-100-top-bottom fill-neutral-1 js_program_section" id="section-articles" data-section-title="Articles Section" data-section-slug="articles-section">
+<section class="travel articles-section space-100-top-bottom fill-neutral-1 js_program_section" id="section-travel-programs" data-section-title="Travel Programs Section" data-section-slug="travel-programs-section">
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
@@ -481,7 +481,7 @@ require_once __ROOT__ . '/inc/header.php';
 <!-- END: Travel Section -->
 
 <!-- Virtual Section -->
-<section class="virtual articles-section space-100-top-bottom fill-dark js_program_section" id="section-articles" data-section-title="Articles Section" data-section-slug="articles-section">
+<section class="virtual articles-section space-100-top-bottom fill-dark js_program_section" id="section-virtual-series" data-section-title="Virtual Series Section" data-section-slug="virtual-series-section">
 	<div class="row">
 		<div class="container">
 			<div class="columns small-12 medium-10 medium-offset-1">
