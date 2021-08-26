@@ -93,7 +93,9 @@ require_once __ROOT__ . '/inc/header.php';
 						<textarea class="visuallyhidden js_share_url_text"><?= $pageURL ?></textarea>
 					</div>
 					<!-- END: Share -->
-					<?= $postContent ?: 'Um, what happened to the content?' ?>
+					<div class="post-content">
+						<?= $postContent ?: 'Um, what happened to the content?' ?>
+					</div>
 				</div>
 			</div>
 		</div>
