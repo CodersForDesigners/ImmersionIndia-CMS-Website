@@ -196,7 +196,7 @@ foreach ( $affiliates as $logo )
 $members = CMS::getPostsOf( 'members' );
 foreach ( $members as $member ) {
 	$member->set( 'name', $member->get( 'post_title' ) );
-	$member->set( 'image', $member->get( 'image' )[ 'sizes' ][ 'small' ] ?? $thumbnailFallbackImage );
+	$member->set( 'image', $member->get( 'image / sizes / small' ) ?? $thumbnailFallbackImage );
 }
 
 
