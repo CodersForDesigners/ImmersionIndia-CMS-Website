@@ -103,7 +103,7 @@ programBookingForm.addField( "date", ".js_form_input_date", function ( values ) 
 
 programBookingForm.submit = function submit () {
 
-	var url = "/server/api/post-enquiry-data.php";
+	var url = "/api/post-enquiry-data";
 
 	var ajaxRequest = $.ajax( {
 		url: url,
