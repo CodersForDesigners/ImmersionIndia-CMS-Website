@@ -30,9 +30,11 @@ $thumbnailFallbackImage = CMS::get( 'list_item_thumbnail_fallback_image / sizes 
  */
 $newFeature = [
 	'title' => CMS::get( 'new_feature_title' ),
-	'image' => CMS::get( 'new_feature_image' ),
+	'image' => CMS::get( 'new_feature_image / sizes / medium' ),
 	'youtubeVideoId' => CMS::get( 'new_feature_video_embed' ),
 	'content' => CMS::get( 'new_feature_content' ),
+	'linkTitle' => CMS::get( 'new_feature_link / title' ),
+	'linkURL' => CMS::get( 'new_feature_link / url' )
 ];
 
 
@@ -273,16 +275,20 @@ require_once __ROOT__ . '/inc/header.php';
 				<div class="h2 space-min-bottom"><?= $newFeature[ 'title' ] ?></div>
 				<div class="row">
 					<div class="columns small-12 large-7 space-min-bottom">
-						<!-- video embed -->
-						<div class="video-embed js_video_embed" data-src="<?= $newFeature[ 'youtubeVideoId' ] ?>">
-							<div class="video-loading-indicator"></div>
-						</div>
+						<?php if ( !empty( $newFeature[ 'youtubeVideoId' ] ) ) : ?>
+							<!-- video embed -->
+							<div class="video-embed js_video_embed" data-src="<?= $newFeature[ 'youtubeVideoId' ] ?>">
+								<div class="video-loading-indicator"></div>
+							</div>
+						<?php elseif ( !empty( $newFeature[ 'image' ] ) ) : ?>
+							<img src="<?= $newFeature[ 'image' ] ?>" class="block">
+						<?php endif; ?>
 					</div>
 					<div class="columns small-12 large-5 space-25-left">
 						<div class="post-content">
 							<?= $newFeature[ 'content' ] ?>
 						</div>
-						<a href="#programs-section" class="button fill-teal">Register Now</a>
+						<a href="<?= $newFeature[ 'linkURL' ] ?>" class="button fill-teal"><?= $newFeature[ 'linkTitle' ] ?></a>
 					</div>
 				</div>
 			</div>
